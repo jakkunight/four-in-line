@@ -67,7 +67,8 @@ const { Server } = require("socket.io");
 
 const io = new Server(server, {
 	cors: {
-		origin: "http://localhost:3001"
+		origin: "http://localhost:3001",
+		credentials: true,
 	}
 });
 const wrapper = (fn) => (socket, next) => fn(socket.request, {}, next);
@@ -79,7 +80,8 @@ io.use(wrapper(passport.initialize()));
 io.use(wrapper(passport.session()));
 io.use((socket, next) => {
 	console.log("\n---------------------------------------------------\n");
-	console.log("[SOCKET] ID:",socket.id);
+	console.log("[SOCKET] ID:", socket.id);
+	console.log("[SOCKET] User:",socket.request.user);
 	if(socket.request.user){
 		console.log("[SOCKET] Authorized connection. Accessing...");
 		next();
@@ -98,7 +100,7 @@ io.on("connection", (socket) => {
 
 	socket.on("newMessage", (message) => {
 		console.log(message.sender + " sent a message!");
-		io.emit("newMessage", message);
+		io.emit("new message", message);
 	});
 });
 

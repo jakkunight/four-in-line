@@ -4,6 +4,8 @@ import Socket from "./components/sockets/Socket.jsx";
 import Navigator from "./components/navigator/Navigator.jsx";
 import Screen from "./components/navigator/Screen.jsx";
 import Login from "./components/Login.jsx";
+import Chat from "./components/Chat.jsx";
+import InputMessage from "./components/InputMessage.jsx";
 
 const App = () => {
 
@@ -16,7 +18,8 @@ const App = () => {
 							<Login />
 						</Screen>
 						<Screen id={1} next={1} prev={0} >
-							{"Hello World!"}
+							<Chat />
+							<InputMessage />
 						</Screen>
 					</Navigator>
 				</User>

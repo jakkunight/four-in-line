@@ -5,7 +5,8 @@ import SocketContext from "./SocketContext.js";
 const Socket = ({ link, children }) => {
 
 	const socket = io(link, {
-		autoConnect: false
+		autoConnect: false,
+		withCredentials: true,
 	});
 
 	return (

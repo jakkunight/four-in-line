@@ -1,16 +1,20 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
 import UserContext from "./users/UserContext.js";
+import SocketContext from "./sockets/SocketContext.js";
 import Router from "./navigator/Router.js";
 
 const Login = () => {
 
 	const { login, userdata } = useContext(UserContext);
+	const socket = useContext(SocketContext);
 	const { navigateToScreen, activeScreen } = useContext(Router);
 	const [ username, setUsername ] = useState("");
 	const [ password, setPassword ] = useState("");
 
 	useEffect(() => {
 		if(userdata){
+			console.log("Connecting socket...");
+			socket.connect();
 			console.log("Navigating to screen 1...");
 			navigateToScreen(1);
 			console.log("activeScreen =", activeScreen);
