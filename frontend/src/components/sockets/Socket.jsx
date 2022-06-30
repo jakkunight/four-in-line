@@ -4,25 +4,12 @@ import SocketContext from "./SocketContext.js";
 
 const Socket = ({ link, children }) => {
 
-	const socket = io(link);
-
-	useEffect(() => {
-		socket.on("connect", () => {
-			console.log("Connected to", link, "as", socket.id);
-		});
-		return () => {
-			socket.on("disconnect", () => {
-				console.log("Disconnected from", link);
-			});
-		};
-	}, []);
-
-	const data = {
-		socket
-	};
+	const socket = io(link, {
+		autoConnect: false
+	});
 
 	return (
-		<SocketContext.Provider value={data} >
+		<SocketContext.Provider value={socket} >
 			{children}
 		</SocketContext.Provider>
 	);

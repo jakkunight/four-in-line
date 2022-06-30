@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const ScreenContext = createContext({});
+const ScreenContext = createContext(false);
 
 export default ScreenContext;

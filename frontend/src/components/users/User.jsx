@@ -3,14 +3,13 @@ import UserContext from "./UserContext.js";
 
 const User = ({ loginLink, logoutLink, children }) => {
 
-	const [ userdata, setUserdata ] = useState("");
+	const [ userdata, setUserdata ] = useState(false);
 
 	const login = async (username, password) => {
 		try{
 			const credentials = new FormData();
 			credentials.append("username", username);
 			credentials.append("password", password);
-			console.log(credentials.getAll("username"), credentials.getAll("password"));
 			const res = await fetch(loginLink, {
 				method: "POST",
 				mode: "cors",
@@ -23,14 +22,13 @@ const User = ({ loginLink, logoutLink, children }) => {
 				},
 				body: credentials
 			});
-			console.log("FETCH RESPONSE:", res);
 			const data = await res.json();
-			console.log("FETCH DATA:", data);
-			setUserdata(data);
+			setUserdata(await JSON.parse(data));
+			return 0;
 		}catch(error){
 			console.error("[UserContext->login()] FATAL ERROR.");
 			console.error(error);
-			throw new Error(error);
+			return -1;
 		}
 	};
 	const logout = async (username, password) => {
@@ -49,7 +47,7 @@ const User = ({ loginLink, logoutLink, children }) => {
 				},
 				body: credentials
 			});
-			setUserdata("");
+			setUserdata(false);
 		}catch(error){
 			console.error("[UserContext->login()] FATAL ERROR.");
 			throw new Error(error);

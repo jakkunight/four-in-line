@@ -1,18 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Router from "./Router.js";
 import ScreenContext from "./ScreenContext.js";
 
 const Screen = ({ id, next, prev, children }) => {
 	const {
-		active,
 		navigateToScreen,
 		activeScreen
 	} = useContext(Router);
 	const [ visible, setVisible ] = useState(false);
 
 	useEffect(() => {
-		setVaisible(active[id]);
-	}, []);
+		if(id === activeScreen){
+			console.log("Activating...");
+			setVisible(true);
+		}else{
+			console.log("Desactivating...");
+			setVisible(false);
+		}
+		console.log("Screen", id, "state:", visible);
+	});
 
 	const navigateToNextScreen = async () => {
 		navigateToScreen(next);
@@ -29,8 +35,8 @@ const Screen = ({ id, next, prev, children }) => {
 
 	if(!visible){
 		return (
-			<ScreenContext.Provider value={data} >
-			</ScreenContext.Provider>
+			<div>
+			</div>
 		);
 	}else{
 		return (
