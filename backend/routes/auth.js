@@ -6,7 +6,7 @@ const users = require("../fakeData.js");
 
 const cors_options = {
 	optionsSuccessStatus: 200,
-	origin: true,
+	origin: "http://localhost:3001",
 	credentials: true,
 	methods: [ "GET", "PUT", "DELETE", "OPTIONS", "HEAD", "POST" ],
 };
@@ -32,10 +32,5 @@ router.post("/auth/login", cors(cors_options), passport.authenticate("local", {
 	successRedirect: "/auth",
 	failureRedirect: "/auth"
 }));
-router.post("/auth/logout", cors(cors_options), async (req, res, next) => {
-	req.logout();
-	res.cookie("connect.sid", "", { expires: new Date() });
-	res.redirect("/auth");
-});
 
 module.exports = router;

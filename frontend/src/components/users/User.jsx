@@ -6,6 +6,7 @@ const User = ({ loginLink, logoutLink, children }) => {
 	const [ userdata, setUserdata ] = useState(false);
 
 	const login = async (username, password) => {
+		console.log("[login] Logging in...");
 		try{
 			const credentials = new FormData();
 			credentials.append("username", username);
@@ -23,15 +24,27 @@ const User = ({ loginLink, logoutLink, children }) => {
 				body: credentials
 			});
 			const data = await res.json();
-			setUserdata(await JSON.parse(data));
-			return 0;
+			const user = await JSON.parse(data);
+			if(user.status){
+				console.log("[login] Failed to log in.");
+				console.log("\t{status}", user.status);
+				console.log("\t{http_code}", user.http_code);
+				console.log("\t{msg}", user.msg);
+				alert(user.msg);
+				return 1;
+			}else{
+				console.log("[login] Successfully logged in");
+				setUserdata(user);
+				return 0;
+			}
 		}catch(error){
-			console.error("[UserContext->login()] FATAL ERROR.");
+			console.error("[login] FATAL ERROR.");
 			console.error(error);
 			return -1;
 		}
 	};
 	const logout = async (username, password) => {
+		console.log("[logout] Logging out...");
 		try{
 			const credentials = new FormData();
 			credentials.append("username", username);
@@ -47,10 +60,24 @@ const User = ({ loginLink, logoutLink, children }) => {
 				},
 				body: credentials
 			});
-			setUserdata(false);
+			const res = await response.json();
+			const data = await JSON.parse(res);
+			if(data.status === 0){
+				console.log("[logout] Successfully logged out.");
+				setUserdata(false);
+				return 0;
+			}else{
+				console.log("[logout] Failed to logout.");
+				console.log("\t{status}", data.status);
+				console.log("\t{http_code}", data.http_code);
+				console.log("\t{msg}", data.msg);
+				alert(data.msg);
+				return 1;
+			}
 		}catch(error){
-			console.error("[UserContext->login()] FATAL ERROR.");
-			throw new Error(error);
+			console.error("[UserContext->logout()] FATAL ERROR.");
+			console.error(error);
+			return -1;
 		}
 	};
 

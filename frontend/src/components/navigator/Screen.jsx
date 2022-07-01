@@ -11,13 +11,10 @@ const Screen = ({ id, next, prev, children }) => {
 
 	useEffect(() => {
 		if(id === activeScreen){
-			console.log("Activating...");
 			setVisible(true);
 		}else{
-			console.log("Desactivating...");
 			setVisible(false);
 		}
-		console.log("Screen", id, "state:", visible);
 	});
 
 	const navigateToNextScreen = async () => {
@@ -51,3 +48,4 @@ export default Screen;
 export {
 	ScreenContext
 };
+

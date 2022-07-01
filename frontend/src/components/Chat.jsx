@@ -10,7 +10,6 @@ const Chat = () => {
 		socket.on("new message", (message) => {
 			setChat([...chat, message]);
 		});
-		console.log("Chat Log:", chat);
 	});
 
 	return (

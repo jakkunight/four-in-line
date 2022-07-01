@@ -4,7 +4,7 @@ import SocketContext from "./sockets/SocketContext.js";
 
 const InputMessage = () => {
 
-	const { userdata } = useContext(UserContext);
+	const { userdata, logout } = useContext(UserContext);
 	const socket = useContext(SocketContext);
 	const [ content, setContent ] = useState("");
 
@@ -18,9 +18,16 @@ const InputMessage = () => {
 					sender: userdata.name,
 					content: content
 				});
+				//={
 				setContent("");
 			}} >
 				{"Send"}
+			</button>
+			<br/>
+			<button onClick={(event) => {
+				logout(userdata.name, userdata.password);
+			}} >
+				{"Logout"}
 			</button>
 		</div>
 	);
