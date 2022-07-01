@@ -98,7 +98,7 @@ io.on("connection", (socket) => {
 	session.save();
 
 	socket.on("newMessage", (message) => {
-		console.log("Session.socketId:", socket.request.session.socketId);
+		console.log("Socket ID:", socket.id);
 		io.emit("new message", message);
 	});
 });
@@ -110,16 +110,25 @@ app.post("/auth/logout", cors({
 	methods: [ "GET", "PUT", "DELETE", "OPTIONS", "HEAD", "POST" ],
 }), async (req, res) => {
 	try{
-		io.of("/").sockets.get(req.session.socketId).disconnect(true);
-		req.logout(() => {});
-		res.cookie("connect.sid", "", { expires: new Date() });
+		if(req.user){
+			io.of("/").sockets.get(req.session.socketId).disconnect(true);
+			req.logout(() => {});
+			res.cookie("connect.sid", "", { expires: new Date() });
+			const resp = {
+				status: 0,
+				http_code: 200,
+				msg: "Successfully logged out."
+			};
+			res.json(JSON.stringify(resp));
+		}else{
+			const resp = {
+				status: 1,
+				http_code: 400,
+				msg: "Failed to log out."
+			};
+			res.json(JSON.stringify(resp));
+		}
 
-		const resp = {
-			status: 0,
-			http_code: 200,
-			msg: "Successfully logged out."
-		};
-		res.json(JSON.stringify(resp));
 	}catch(error){
 		console.error("FATAL ERROR!!!");
 		console.error(error);
